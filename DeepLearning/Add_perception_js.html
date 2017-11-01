@@ -1,0 +1,73 @@
+<p id="elem_print">output:<br></p>
+<script src="http://leperca.coding.me/jsnote/fn.js"></script>
+<script>
+    println("perception")
+    // input data
+
+    var x1 = 0
+    var x2 = 0
+    var rd = 0
+
+    var print_table=printTable
+
+    var a = 0.1 // learning ratio
+
+    var w1 = 0.3
+    var w2 = -0.1
+
+    var activate = function (x) {
+        return x >= 0.19999999 ? 1 : 0
+    }
+
+    var predicate = function (w1, w2, x1, x2, rd) {
+        var r1 = activate(w1 * x1 + w2 * x2)
+        var err = rd - r1
+        return [r1, err]
+    }
+
+    var iter = function (w1, w2, x1, x2, rd) {
+        [r1, err] = predicate(w1, w2, x1, x2, rd)
+        var new_w1 = w1 + a * x1 * err
+        var new_w2 = w2 + a * x2 * err
+        return [new_w1, new_w2, err, r1]
+    }
+
+    var r = 0
+
+    for (n = 0; n < 5; n++) {
+        x1 = 0
+        x2 = 0
+        rd = 0
+        r = iter(w1, w2, x1, x2, rd)
+        print_table([x1, x2, rd, w1.toPrecision(1), w2.toPrecision(1), r[3], r[2], r[0].toPrecision(1), r[1].toPrecision(1)])
+        w1 = r[0]
+        w2 = r[1]
+
+        x1 = 0
+        x2 = 1
+        rd = 0
+        r = iter(w1, w2, x1, x2, rd)
+        print_table([x1, x2, rd, w1.toPrecision(1), w2.toPrecision(1), r[3], r[2], r[0].toPrecision(1), r[1].toPrecision(1)])
+        w1 = r[0]
+        w2 = r[1]
+
+        x1 = 1
+        x2 = 0
+        rd = 0
+        r = iter(w1, w2, x1, x2, rd)
+        print_table([x1, x2, rd, w1.toPrecision(1), w2.toPrecision(1), r[3], r[2], r[0].toPrecision(1), r[1].toPrecision(1)])
+        w1 = r[0]
+        w2 = r[1]
+
+        x1 = 1
+        x2 = 1
+        rd = 1
+        r = iter(w1, w2, x1, x2, rd)
+        print_table([x1, x2, rd, w1, w2.toPrecision(1), r[3], r[2], r[0].toPrecision(1), r[1].toPrecision(1)])
+
+        w1 = r[0]
+        w2 = r[1]
+        print("---------------------------------------")
+    }
+
+</script>
